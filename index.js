@@ -5,16 +5,20 @@ const { getAllGenres, getGenreById } = require('./controllers/genres')
 const { getAllNovels, getNovelByIdOrTitle } = require('./controllers/novels')
 
 const app = express()
+
+app.use(express.static('client/build'))
 app.use(cors())
 
 app.get('/api/authors', getAllAuthors)
-app.get('/authors/:identifier', getAuthorByIdOrName)
+app.get('api/authors/:identifier', getAuthorByIdOrName)
 
 app.get('/api/genres', getAllGenres)
-app.get('/genres/:id', getGenreById)
+app.get('api/genres/:id', getGenreById)
 
 app.get('/api/novels', getAllNovels)
 app.get('/api/novels/:identifier', getNovelByIdOrTitle)
+
+app.all('*', (req, res) => res.sendFile(__dirname, 'client/build', 'index.html'))
 
 app.listen(1337, () => {
   console.log('Listening on port 1337...') // eslint-disable-line no-console
